@@ -35,29 +35,22 @@ int main()
 }
 #include <string.h>
 int fsearch(char*str,char*s)
-{   FILE*pb;
-   
-	int result = 0;
-    while(!feof(pb)){
+{   int result = 0;
+    int line=0;
+    while(str[line]!='\0'){
     if(strcmp(str->lastname,s)== 0){
       printf("%s\n",str->firstname);
-      printf("%d/",str->date.day);
-      printf("%d/",str->date.month);
-      printf("%d\n",str->date.year);
       printf("%s\n",str->adress);
       printf("%s\n",str->city);
       printf("%d\n",str->number);
 			result++;
 			str++;
+			line ++;
 
 }
 
 	if(result == 0) {
 		printf("Sorry, couldn't find a match.\n");
-	}
-
-	if(pb) {
-		fclose(pb);
 	}
    	return(0);
 }
