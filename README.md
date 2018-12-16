@@ -33,13 +33,13 @@ int main()
 
     return 0;
 }
-#iclude <string.h>
-fsearch(char*str,char*s)
+#include <string.h>
+int fsearch(char*str,char*s)
 {   FILE*pb;
     int line_num = 1;
 	int find_result = 0;
     while(!feof(pb)){
-    if(strstr(str,s)!= NUll){
+    if(strstr(str,s)!= NULL){
       printf("A match found on line: %d\n", line_num);
 			find_result++;
 			str++;
