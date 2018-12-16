@@ -58,20 +58,18 @@ int fsearch(char*str,char*s)
 }
 
 Sami,Ahmed,10-06-1989,26 Elhoreya Street,Alexandria,4876321
-Sara,Khaled,11-08-1999,211 el max street,Alexandria,598327
-Maram,attia,22-12-1998,23 zezenia street,Alexandria,5303596
-Amina,selim,27-7-1999,21 Riad street,Alexandria,5789362
-Khadija,assem,23-09-1999,75 al rondi street,Alexandria,5982067
+khaled,sara,11-08-1999,211 el max street,Alexandria,598327
+attia,maram,22-12-1998,23 zezenia street,Alexandria,5303596
+selim,amina,27-7-1999,21 Riad street,Alexandria,5789362
+assem,Khadija,23-09-1999,75 al rondi street,Alexandria,5982067
 Ali,Mohamed,22-05-2007,28 gleem street,Alexandria,5960357
 Ahmed,omar,12-03-1989,35 al moez street,cairo,7852964
 Ibrahim,ali,30-09-1978,66 zahran street,Aswan,986327
-Mai,ali,15-03-2009,20 nasir street,Alexandria,5910637
+ali,mai,15-03-2009,20 nasir street,Alexandria,5910637
 Omar,ahamed,09-07-2001,19 talaat,Alexandria,9304587
-Shaima,ali,16-07-2000,21 loran,Alexandria,9632845
-Habiba,Ibrahim,16-03-2009,20 roushdy,Alexandria,5396217
-Mirna,ali,15-03-2002,18 syria street,Alexandria,9638514
-
-
+ali,Shaima,16-07-2000,21 loran,Alexandria,9632845
+ibrahim,Habiba,16-03-2009,20 roushdy,Alexandria,5396217
+ali,mirna,15-03-2002,18 syria street,Alexandria,9638514
 #include <stdio.h>
 #include <stdlib.h>
 #include "phone-book.h"
@@ -94,16 +92,14 @@ while(!feof(pb)){
    i++;
 }
 for(i=0;i<100;i++)
-   {
-   printf("%s",(people+i)->lastname);
-   printf("%s",(people+i)->firstname);
-   printf("%d",(people+i)->date.day);
-   printf("%d",(people+i)->date.month);
-   printf("%d",(people+i)->date.year);
-   printf("%s",(people+i)->adress);
-   printf("%s",(people+i)->city);
-   printf("%d",(people+i)->number);
-   }
+   {fscanf(pb,"%s",(people+i)->lastname);
+   fscanf(pb,"%s",(people+i)->firstname);
+   fscanf(pb,"%d",(people+i)->date.day);
+   fscanf(pb,"%d",(people+i)->date.month);
+   fscanf(pb,"%d",(people+i)->date.year);
+   fscanf(pb,"%s",(people+i)->adress);
+   fscanf(pb,"%s",(people+i)->city);
+   fscanf(pb,"%d",(people+i)->number);}
    fclose(pb);
 
     return 0;
