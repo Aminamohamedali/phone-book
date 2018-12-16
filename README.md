@@ -70,21 +70,20 @@ Omar,ahamed,09-07-2001,19 talaat,Alexandria,9304587
 Shaima,ali,16-07-2000,21 loran,Alexandria,9632845
 Habiba,Ibrahim,16-03-2009,20 roushdy,Alexandria,5396217
 Mirna,ali,15-03-2002,18 syria street,Alexandria,9638514
-
 #include <stdio.h>
 #include <stdlib.h>
 #include "phone-book.h"
 int main()
 {
    FILE*pb;
-   data people[6];
+   data people[100];
    int i=0;
    pb=fopen("phone-book.txt","r");
 while(!feof(pb)){
    fscanf(pb,"%[^,]%*c",(people+i)->lastname);
    fscanf(pb,"%[^,]%*c",(people+i)->firstname);
-   fscanf(pb,"%[^,]%*c",(people+i)->date.day);
-   fscanf(pb,"%[^,]%*c",(people+i)->date.month);
+   fscanf(pb,"%[^-]%*c",(people+i)->date.day);
+   fscanf(pb,"%[^-]%*c",(people+i)->date.month);
    fscanf(pb,"%[^,]%*c",(people+i)->date.year);
    fscanf(pb,"%[^,]%*c",(people+i)->adress);
    fscanf(pb,"%[^,]%*c",(people+i)->city);
@@ -92,7 +91,7 @@ while(!feof(pb)){
    fscanf(pb,"\n");
    i++;
 }
-for(i=0;i<1;i++)
+for(i=0;i<100;i++)
    {fscanf(pb,"%s",(people+i)->lastname);
    fscanf(pb,"%s",(people+i)->firstname);
    fscanf(pb,"%d",(people+i)->date.day);
