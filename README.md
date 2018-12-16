@@ -70,6 +70,8 @@ Omar,ahamed,09-07-2001,19 talaat,Alexandria,9304587
 Shaima,ali,16-07-2000,21 loran,Alexandria,9632845
 Habiba,Ibrahim,16-03-2009,20 roushdy,Alexandria,5396217
 Mirna,ali,15-03-2002,18 syria street,Alexandria,9638514
+
+
 #include <stdio.h>
 #include <stdlib.h>
 #include "phone-book.h"
@@ -92,14 +94,16 @@ while(!feof(pb)){
    i++;
 }
 for(i=0;i<100;i++)
-   {fscanf(pb,"%s",(people+i)->lastname);
-   fscanf(pb,"%s",(people+i)->firstname);
-   fscanf(pb,"%d",(people+i)->date.day);
-   fscanf(pb,"%d",(people+i)->date.month);
-   fscanf(pb,"%d",(people+i)->date.year);
-   fscanf(pb,"%s",(people+i)->adress);
-   fscanf(pb,"%s",(people+i)->city);
-   fscanf(pb,"%d",(people+i)->number);}
+   {
+   printf("%s",(people+i)->lastname);
+   printf("%s",(people+i)->firstname);
+   printf("%d",(people+i)->date.day);
+   printf("%d",(people+i)->date.month);
+   printf("%d",(people+i)->date.year);
+   printf("%s",(people+i)->adress);
+   printf("%s",(people+i)->city);
+   printf("%d",(people+i)->number);
+   }
    fclose(pb);
 
     return 0;
