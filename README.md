@@ -1,54 +1,104 @@
 # phone-book
-typedef struct{
+////////header
+#include <string.h>
+typedef struct
+{
     int day;
     int month;
     int year;
-}birthdate;
+} birthdate;
 
 
-typedef struct{
+typedef struct
+{
     char lastname[50];
     char firstname[50];
     birthdate date;
     char adress[100];
     char city[50];
     int number;
-}data;
+} data;
+int File_Load(FILE*fp,data people[])
+{
+    int i=0;
+    fp=fopen("phone-book.txt","r");
+    while(!feof(fp))
+    {
+        fscanf(fp,"%[^,]%*c",(people+i)->lastname);
+        fscanf(fp,"%[^,]%*c",(people+i)->firstname);
+        fscanf(fp,"%d-%d-%d,",&(people+i)->date.day,&(people+i)->date.month,&(people+i)->date.year);
+        fscanf(fp,"%[^,]%*c",(people+i)->adress);
+        fscanf(fp,"%[^,]%*c",(people+i)->city);
+        fscanf(fp,"%d\n",&(people+i)->number);
+        i++;
+    }
+    fclose(fp);
+    return i;
+}
+void File_Add(FILE*fp)
+{
+    char temp[100];
+    fp=fopen("phone-book.txt","a");
+    printf("Enter last name:");
+    scanf("%s",temp);
+    fprintf(fp,temp);
+    fprintf(fp,",");
+    printf("Enter First name:");
+    scanf("%s",temp);
+    fprintf(fp,temp);
+    fprintf(fp,",");
+    printf("Enter Date of Birth\n");
+    printf("Day:");
+    scanf("%s",temp);
+    fprintf(fp,temp);
+    fprintf(fp,"-");
+    printf("Month:");
+    scanf("%s",temp);
+    fprintf(fp,temp);
+    fprintf(fp,"-");
+    printf("Year:");
+    scanf("%s",temp);
+    getchar();
+    fprintf(fp,temp);
+    fprintf(fp,",");
+    printf("Enter Address:");
+    gets(temp);
+    fprintf(fp,temp);
+    fprintf(fp,",");
+    printf("Enter phone number:");
+    scanf("%s",temp);
+    fprintf(fp,temp);
+    fprintf(fp,"\n");
+
+}
+//////////
 
 #include <stdio.h>
 #include <stdlib.h>
 #include "phone-book.h"
 int main()
 {
-   FILE*pb;
-   data people[100];
-   int j=0,i=0;
-   pb=fopen("phone-book.txt","r");
-while(!feof(pb)){
-   fscanf(pb,"%[^,]%*c",(people+i)->lastname);
-   fscanf(pb,"%[^,]%*c",(people+i)->firstname);
-   fscanf(pb,"%d-%d-%d,",&(people+i)->date.day,&(people+i)->date.month,&(people+i)->date.year);
-   fscanf(pb,"%[^,]%*c",(people+i)->adress);
-   fscanf(pb,"%[^,]%*c",(people+i)->city);
-   fscanf(pb,"%d\n",&(people+i)->number);
-   i++;
-}
-fclose(pb);
-for(j=0;j<i;j++)
-   {
-   printf("%s\n",(people+j)->lastname);
-   printf("%s\n",(people+j)->firstname);
-   printf("%d\n",(people+j)->date.day);
-   printf("%d\n",(people+j)->date.month);
-   printf("%d\n",(people+j)->date.year);
-   printf("%s\n",(people+j)->adress);
-   printf("%s\n",(people+j)->city);
-   printf("%d\n\n",(people+j)->number);
-   }
-
-
+    FILE*pb;
+    data people[100];
+    int members,j;
+    members=File_Load(pb,people);
+    for(j=0; j<members; j++)
+    {
+        printf("last name:%s\n",(people+j)->lastname);
+        printf("first name:%s\n",(people+j)->firstname);
+        printf("Date of birth:%d/",(people+j)->date.day);
+        printf("%d/",(people+j)->date.month);
+        printf("%d\n",(people+j)->date.year);
+        printf("Address:%s\n",(people+j)->adress);
+        printf("City:%s\n",(people+j)->city);
+        printf("phone number:%d\n\n",(people+j)->number);
+    }
+    File_Add(pb);
     return 0;
 }
+
+
+
 #include <string.h>
 int fsearch(char*str,char*s)
 {   int result = 0;
