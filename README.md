@@ -24,12 +24,14 @@ int main()
    data people[6];
    int i=0;
    pb=fopen("phone-book.txt","r");
-   while(!feof(pb)){
-    fscanf(pb,"%[^,]",*(people+i)->lastname);
-    i++;
-   }
+while(!feof(pb)){
+   fscanf(pb,"%[^,]%*c",(people+i)->lastname);
+   i++;
+}
+for(i=0;i<6;i++)
+   printf("%s\n",(people+i)->lastname);
    fclose(pb);
-   printf("%s",people->lastname);
 
     return 0;
 }
+
