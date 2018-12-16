@@ -1,16 +1,16 @@
 # phone-book
-typedef birthdate{
+typedef struct{
     int day;
     int month;
     int year;
-}
-    
+}birthdate;
 
-typedef data{
+
+typedef struct{
     char lastname[50];
     char firstname[50];
     birthdate date;
     char adress[100];
     char city[50];
     int number;
-}
+}data;
