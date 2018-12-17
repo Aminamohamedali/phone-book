@@ -121,3 +121,18 @@ int fsearch(char*str,char*s)
    	return(0);
 }
 
+
+void file_delete(data people[],int l,char *last,char *first){
+
+    int i=0,j;
+    for(i=0;i<l;i++){
+          if(strcmp(people[i].lastname,last)==0 && strcmp(people[i].firstname,first)==0){
+                    break;}
+          }
+
+
+        for(;i<l;i++)
+            people[i]=people[i+1];
+
+
+}
