@@ -122,15 +122,18 @@ int fsearch(char*str,char*s)
 }
 
 
-void file_delete(data people[],int l,char *last,char *first){
-
-    int i=0,j;
+void file_delete(data people[],int l){
+    char last[50],first[50];
+    int i=0;
+    printf("please enter last and first name to delete data\n");
+    gets(last);
+    gets(first);
     for(i=0;i<l;i++){
           if(strcmp(people[i].lastname,last)==0 && strcmp(people[i].firstname,first)==0){
                     break;}
           }
-
-
+          if(i==l)
+            printf("no data to delete\n");
         for(;i<l;i++)
             people[i]=people[i+1];
 
