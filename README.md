@@ -102,8 +102,9 @@ int main()
 #include <string.h>
 int fsearch(char*str,char*s)
 {   int result = 0;
-    int line=0;
-    while(str[line]!='\0'){
+    int line=File_Load(FILE*fp,data people[]);
+    int i;
+    for(i=1;i<=line;i++){
     if(strcmp(str->lastname,s)== 0){
       printf("%s\n",str->firstname);
       printf("%s\n",str->adress);
@@ -111,7 +112,7 @@ int fsearch(char*str,char*s)
       printf("%d\n",str->number);
 			result++;
 			str++;
-			line ++;
+			
 
 }
 
