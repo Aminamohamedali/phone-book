@@ -1,24 +1,61 @@
-# phone-book
-///////main//////
 #include <stdio.h>
 #include <stdlib.h>
 #include "phone-book.h"
 
 int main()
 {
-    int j;
+    int x=0,y=0;
+    char temp[4];
     File_Load();
-    File_Modify();
-    for(j=0; j<members; j++)
+    printf("Welcome to your phone book\n   what do you want to do?\n ");
+    while(1)
     {
-        printf("last name:%s\n",(people+j)->lastname);
-        printf("first name:%s\n",(people+j)->firstname);
-        printf("Date of birth:%d/",(people+j)->date.day);
-        printf("%d/",(people+j)->date.month);
-        printf("%d\n",(people+j)->date.year);
-        printf("Address:%s\n",(people+j)->address);
-        printf("E-mail:%s\n",(people+j)->mail);
-        printf("phone number:%d\n\n",(people+j)->number);
+        if(x!=0)
+            printf("What do you want to do Next?\n ");
+        printf("1.Search for a contact\n 2.Add new contact\n 3.Delete existing contact\n 4.Modify existing contact\n 5.Print the entire dictionary\n ");
+        if(x!=0)
+            printf("6.Save modification\n 7.Exit\n");
+        scanf("%d",&x);
+        switch(x)
+        {
+        case(1):
+            File_Search();
+            break;
+        case(2):
+            File_Add();
+            y=2;
+            break;
+        case(3):
+            File_Delete();
+            y=3;
+            break;
+        case(4):
+            File_Modify();
+            y=4;
+            break;
+        case(5):
+            File_Print();
+            break;
+        case(6):
+            File_Save();
+            exit(1);
+        case(7):
+            if(y==2||y==3||y==4)
+            {
+                printf(" WARNING \"All your changes would be discarded Are you sure you want to exit\"[yes no]\n");
+                scanf("%s",temp);
+                if(strcasecmp(temp,"no")==0)
+                {
+                    printf("Do you want to save?[yes no]\n");
+                    scanf("%s",temp);
+                    if(strcasecmp(temp,"yes")==0)
+                        File_Save();
+                    exit(1);
+                }
+            }
+            exit(1);
+
+        }
     }
     return 0;
 }
@@ -250,7 +287,49 @@ void File_sort()
     }
 }
 
+void File_Print()
+{
+    File_Sort();
+    int j;
+    for(j=0; j<members; j++)
+    {
+        printf("last name:%s\n",(people+j)->lastname);
+        printf("first name:%s\n",(people+j)->firstname);
+        printf("Date of birth:%d/",(people+j)->date.day);
+        printf("%d/",(people+j)->date.month);
+        printf("%d\n",(people+j)->date.year);
+        printf("Address:%s\n",(people+j)->address);
+        printf("E-mail:%s\n",(people+j)->mail);
+        printf("phone number:%d\n\n",(people+j)->number);
+    }
 
+}
+void File_Save()
+{
+    int i=members-10;
+    File_Sort();
+    fpb=fopen("phone-book2.txt","w");
+    for(i=0; i<members; i++)
+    {
+        fprintf(fpb,"%s",people[i].lastname);
+        fprintf(fpb,",");
+        fprintf(fpb,"%s",people[i].firstname);
+        fprintf(fpb,",");
+        fprintf(fpb,"%d",people[i].date.day);
+        fprintf(fpb,"-");
+        fprintf(fpb,"%d",people[i].date.month);
+        fprintf(fpb,"-");
+        fprintf(fpb,"%d",people[i].date.year);
+        fprintf(fpb,",");
+        fprintf(fpb,"%s",people[i].address);
+        fprintf(fpb,",");
+        fprintf(fpb,"%s",people[i].mail);
+        fprintf(fpb,",");
+        fprintf(fpb,"%d",people[i].number);
+        fprintf(fpb,"\n");
+    }
+    fclose(fpb);
+}
 //////////
 
 
