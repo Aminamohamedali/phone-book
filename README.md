@@ -211,5 +211,45 @@ void File_Modify()
     }
 
 }
+
+void File_sort()
+{
+
+    int sorted;
+    data temp;
+    int i;
+    while(1)
+    {
+        sorted=0;
+        for(i=0; i<members-1; i++)
+        {
+            if(strcasecmp(people[i].lastname,people[i+1].lastname)>0)
+            {
+                temp=people[i];
+                people[i]=people[i+1];
+                people[i+1]=temp;
+                sorted=1;
+            }
+            else if(strcasecmp(people[i].lastname,people[i+1].lastname)==0&&strcasecmp(people[i].firstname,people[i+1].firstname)>0)
+            {
+                temp=people[i];
+                people[i]=people[i+1];
+                people[i+1]=temp;
+                sorted=1;
+            }
+            else if(strcasecmp(people[i].lastname,people[i+1].lastname)==0&&strcasecmp(people[i].firstname,people[i+1].firstname)==0&&people[i].number>people[i+1].number)
+            {
+                temp=people[i];
+                people[i]=people[i+1];
+                people[i+1]=temp;
+                sorted=1;
+            }
+        }
+        if(sorted==0)
+            break;
+    }
+}
+
+
 //////////
 
