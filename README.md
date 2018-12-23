@@ -96,18 +96,44 @@ void File_Load()
     fclose(fpb);
 }
 void File_Add()
-{
+{int temp=0;
     printf("Enter last name:");
     scanf("%s",people[members].lastname);
+
     printf("Enter First name:");
     scanf("%s",people[members].firstname);
     printf("Enter Date of Birth\n");
     printf("Day:");
+    do{temp=0;
     scanf("%d",&people[members].date.day);
+    if (people[members].date.day<1||people[members].date.day>31);
+    {temp=1;
+    printf("Not valid \nplease enter correct day between[1~31]");
+    }
+    }
+    while(temp);
     printf("Month:");
+    do{temp=0;
     scanf("%d",&people[members].date.month);
+    if (people[members].date.month<1||people[members].date.month>12);
+    {temp=1;
+    printf("Not valid \nplease enter correct month between[1~12]");
+    }
+    }
+    while(temp);;
     printf("Year:");
+    
+    do{temp=0;
     scanf("%d",&people[members].date.year);
+    if (people[members].date.year<
+    
+
+1918||people[members].date.year>2018);
+    {temp=1;
+    printf("Not valid \nplease enter correct day between[1~31]");
+    }
+    }
+    while(temp);
     printf("Enter Address:");
     getchar();
     gets(people[members].address);
@@ -117,7 +143,7 @@ void File_Add()
     scanf("%d",&people[members].number);
     members++;
 }
-void File_Search()
+void File_Search(
 {
     char key[12];
     int result = 0;
