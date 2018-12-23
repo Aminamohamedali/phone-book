@@ -95,55 +95,91 @@ void File_Load()
     }
     fclose(fpb);
 }
+int NumberValidation(char x[])
+{
+    int i;
+    if (strlen(x)!=7)
+        return 0;
+    for(i=0; i<7; i++)
+    {
+        if(x[i]<48||x[i]>57)
+            return 0;
+    }
+    return 1;
+}
+int DayValidation(char x[])
+{
+    if (strlen(x)>2||x[0]>51||(x[0]==51&&x[1]>49))
+        return 0;
+    return 1;
+}
+int MonthValidation(char x[])
+{
+    if (strlen(x)>2||x[0]>49||(x[0]==49&&x[1]>50))
+        return 0;
+    return 1;
+}
+int yearValidation(char x[])
+{
+    if (strlen(x)!=4||x[0]>50||(x[0]==49&&x[1]<57)||(x[0]==50&&(x[1]>48||x[2]>49||x[3]>56)))
+        return 0;
+    return 1;
+}
 void File_Add()
-{int temp=0;
+{
+    int temp=0;
     printf("Enter last name:");
     scanf("%s",people[members].lastname);
-
     printf("Enter First name:");
     scanf("%s",people[members].firstname);
     printf("Enter Date of Birth\n");
     printf("Day:");
-    do{temp=0;
-    scanf("%d",&people[members].date.day);
-    if (people[members].date.day<1||people[members].date.day>31);
-    {temp=1;
-    printf("Not valid \nplease enter correct day between[1~31]");
+    while(1)
+    {
+        scanf("%s",people[members].date.day);
+        temp=DayValidation(people[members].date.day);
+        if(!temp)
+            printf("Not valid \nplease enter correct day between[1~31]");
+        else
+            break;
     }
-    }
-    while(temp);
     printf("Month:");
-    do{temp=0;
-    scanf("%d",&people[members].date.month);
-    if (people[members].date.month<1||people[members].date.month>12);
-    {temp=1;
-    printf("Not valid \nplease enter correct month between[1~12]");
+    while(1)
+    {
+        scanf("%s",people[members].date.month);
+        temp=MonthValidation(people[members].date.month);
+        if(!temp)
+            printf("Not valid \nplease enter correct month between[1~12]");
+        else
+            break;
     }
-    }
-    while(temp);;
     printf("Year:");
-    
-    do{temp=0;
-    scanf("%d",&people[members].date.year);
-    if (people[members].date.year<
-    
-
-1918||people[members].date.year>2018);
-    {temp=1;
-    printf("Not valid \nplease enter correct day between[1~31]");
+    while(1)
+    {
+        scanf("%s",people[members].date.year);
+        temp=yearValidation(people[members].date.year);
+        if(!temp)
+           printf("Not valid \nplease enter correct year between[1900~2018]");
+        else
+            break;
     }
-    }
-    while(temp);
     printf("Enter Address:");
     getchar();
     gets(people[members].address);
     printf("Enter the email:");
     gets(people[members].mail);
     printf("Enter phone number:");
-    scanf("%d",&people[members].number);
+    while(1)
+    {
+        scanf("%s",people[members].number);
+        temp=NumberValidation(people[members].number);
+        if(!temp)
+            printf("Not valid \nplease enter correct number");
+        else
+            break;
+    }
     members++;
-}
-void File_Search(
+}void File_Search(
 {
     char key[12];
     int result = 0;
@@ -332,7 +368,7 @@ void File_Print()
 }
 void File_Save()
 {
-    int i=members-10;
+    int i;
     File_Sort();
     fpb=fopen("phone-book2.txt","w");
     for(i=0; i<members; i++)
