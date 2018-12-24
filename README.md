@@ -5,7 +5,6 @@
 int main()
 {
     int x=0,y=0;
-    char temp[4];
     File_Load();
     printf("Welcome to your phone book\n   what do you want to do?\n ");
     while(1)
@@ -14,7 +13,7 @@ int main()
             printf("What do you want to do Next?\n ");
         printf("1.Search for a contact\n 2.Add new contact\n 3.Delete existing contact\n 4.Modify existing contact\n 5.Print the entire dictionary\n ");
         if(x!=0)
-            printf("6.Save modification\n 7.Exit\n");
+            printf("6.Save modification\n 7.Quit\n");
         scanf("%d",&x);
         switch(x)
         {
@@ -40,33 +39,21 @@ int main()
             File_Save();
             exit(1);
         case(7):
-            if(y==2||y==3||y==4)
-            {
-                printf(" WARNING \"All your changes would be discarded Are you sure you want to exit\"[yes no]\n");
-                scanf("%s",temp);
-                if(strcasecmp(temp,"no")==0)
-                {
-                    printf("Do you want to save?[yes no]\n");
-                    scanf("%s",temp);
-                    if(strcasecmp(temp,"yes")==0)
-                        File_Save();
-                    exit(1);
-                }
-            }
-            exit(1);
+            File_Quit(y);
 
         }
+
+
     }
+
     return 0;
 }
-////////header/////////
-#include <string.h>
-
+////////header1/////////
 typedef struct
 {
     char day[4];
     char month[4];
-    char year[4];
+    char year[8];
 } birthdate;
 typedef struct
 {
@@ -80,61 +67,115 @@ typedef struct
 FILE*fpb;
 data people[100];
 int members=0;
+
+
+int NameValidation(char x[])
+{
+    int i;
+    for(i=0; i<strlen(x); i++)
+    {
+        if(x[i]>48&&x[i]<57)
+            return 0;
+    }
+    return 1;
+}
+int DayValidation(char x[])
+{
+    if (strlen(x)>2||((strlen(x)==2)&&x[0]>51)||(x[0]==51&&x[1]>49))
+        return 0;
+    return 1;
+}
+int MonthValidation(char x[])
+{
+    if (strlen(x)>2||((strlen(x)==2)&&x[0]>49)||(x[0]==49&&x[1]>50))
+        return 0;
+    return 1;
+}
+int yearValidation(char x[])
+{
+    if (strlen(x)!=4||x[0]>50||(x[0]==49&&x[1]<57)||(x[0]==50&&(x[1]>48||x[2]>49||x[3]>56)))
+        return 0;
+    return 1;
+}
+int NumberValidation(char x[])
+{
+    int i;
+    if (strlen(x)!=7)
+        return 0;
+    for(i=0; i<7; i++)
+    {
+        if(x[i]<48||x[i]>57)
+            return 0;
+    }
+    return 1;
+}
+void Print_data(int j)
+{
+        printf("last name:%s\n",(people+j)->lastname);
+        printf("first name:%s\n",(people+j)->firstname);
+        printf("Date of birth:%s/",(people+j)->date.day);
+        printf("%s/",(people+j)->date.month);
+        printf("%s\n",(people+j)->date.year);
+        printf("Address:%s\n",(people+j)->address);
+        printf("E-mail:%s\n",(people+j)->mail);
+        printf("phone number:%s\n\n",(people+j)->number);
+}
+////////header2/////////
+#include <string.h>
+#include "validation.h"
+
 void File_Load()
 {
     fpb=fopen("phone-book.txt","r");
     while(!feof(fpb))
     {
-        fscanf(fpb,"%[^,]%*c",(people+members)->lastname);
-        fscanf(fpb,"%[^,]%*c",(people+members)->firstname);
-        fscanf(fpb,"%s-%s-%s,",(people+members)->date.day,(people+members)->date.month,(people+members)->date.year);
-        fscanf(fpb,"%[^,]%*c",(people+members)->address);
-        fscanf(fpb,"%[^,]%*c",(people+members)->mail);
-        fscanf(fpb,"%s\n",(people+members)->number);
+        fscanf(fpb,"%[^,],",people[members].lastname);
+        fscanf(fpb,"%[^,],",people[members].firstname);
+        fscanf(fpb,"%[^-]-",people[members].date.day);
+        fscanf(fpb,"%[^-]-",people[members].date.month);
+        fscanf(fpb,"%[^,],",people[members].date.year);
+        fscanf(fpb,"%[^,],",people[members].address);
+        fscanf(fpb,"%[^,],",people[members].mail);
+        fscanf(fpb,"%s\n",people[members].number);
         members++;
     }
     fclose(fpb);
 
 }
-int NumberValidation(char x[])
-{
-    int i;
-    if (strlen(x)!=7)return 0;
-    for(i=0;i<7;i++)
-    {  if(x[i]<48||x[i]>57)
-    return 0;
-    }
-return 1;
-}
-int DayValidation(char x[])
-{
-    if (strlen(x)>2||x[0]>51||(x[0]==51&&x[1]>49))return 0;
-    return 1;
-}
-int MonthValidation(char x[])
-{
-    if (strlen(x)>2||x[0]>49||(x[0]==49&&x[1]>50))return 0;
-    return 1;
-}
-int yearValidation(char x[])
-{
-    if (strlen(x)!=4||x[0]>50||(x[0]==49&&x[1]<57)||(x[0]==50&&(x[1]>48||x[2]>49||x[3]>56)))return 0;
-    return 1;
-}
 void File_Add()
 {
     int temp=0;
     printf("Enter last name:");
-    scanf("%s",people[members].lastname);
+    while(1)
+    {
+        scanf("%s",people[members].lastname);
+        temp=NameValidation(people[members].lastname);
+        if(!temp)
+            printf("Not valid \nplease enter correct Name:");
+        else
+            break;
+    }
     printf("Enter First name:");
-    scanf("%s",people[members].firstname);
+    while(1)
+    {
+        scanf("%s",people[members].firstname);
+        temp=NameValidation(people[members].firstname);
+        if(!temp)
+            printf("Not valid \nplease enter correct Name:");
+        else
+            break;
+    }
+
     printf("Enter Date of Birth\n");
     printf("Day:");
-    while(1){
-    scanf("%s",people[members].date.day);
-    temp=DayValidation(people[members].date.day);
-    if(!temp)printf("Not valid \nplease enter correct day between[1~31]");
-    else break;
+    while(1)
+    {
+        scanf("%s",people[members].date.day);
+        temp=DayValidation(people[members].date.day);
+        if(!temp)
+            printf("Not valid \nplease enter correct day between[1~31] ");
+        else
+            break;
     }
     printf("Month:");
     while(1)
@@ -142,7 +183,7 @@ void File_Add()
         scanf("%s",people[members].date.month);
         temp=MonthValidation(people[members].date.month);
         if(!temp)
-            printf("Not valid \nplease enter correct month between[1~12]");
+            printf("Not valid \nplease enter correct month between[1~12] ");
         else
             break;
     }
@@ -152,7 +193,7 @@ void File_Add()
         scanf("%s",people[members].date.year);
         temp=yearValidation(people[members].date.year);
         if(!temp)
-           printf("Not valid \nplease enter correct year between[1900~2018]");
+            printf("Not valid \nplease enter correct year between[1900~2018] ");
         else
             break;
     }
@@ -162,37 +203,121 @@ void File_Add()
     printf("Enter the email:");
     gets(people[members].mail);
     printf("Enter phone number:");
-    while(1){
-    scanf("%s",people[members].number);
-    temp=NumberValidation(people[members].number);
-    if(!temp)printf("Not valid \nplease enter correct number");
-    else break;
+    while(1)
+    {
+        scanf("%s",people[members].number);
+        temp=NumberValidation(people[members].number);
+        if(!temp)
+            printf("Not valid \nplease enter correct number");
+        else
+            break;
     }
     members++;
 }
 void File_Search()
 {
-    char key[12];
+    char key[12],key1[4],key2[4],key3[4];
+    char*key4;
     int result = 0;
-    int i;
-    printf("Enter last name for whom you search:");
-    scanf("%s",key);
-    for(i=0; i<members; i++)
+    int i,x;
+    printf("Select the field by which you want to search\n ");
+    printf("1.Lastname\n 2.Firstname\n 3.Date of birth\n 4.Address\n 5.E-mail\n 6.Number\n");
+    scanf("%d",&x);
+    switch(x)
     {
-        if(strcasecmp(people[i].lastname,key)== 0)
+    case(1):
+        printf("Enter last name for whom you search:");
+        scanf("%s",key);
+        for(i=0; i<members; i++)
         {
-            printf("first name:%s\n",people[i].firstname);
-            printf("Address:%s\n",people[i].address);
-            printf("E-mail:%s\n",people[i].mail);
-            printf("phone number:%s\n\n",people[i].number);
-            result++;
+            if(strcasecmp(people[i].lastname,key)== 0)
+            {
+                Print_data(i);
+                result++;
+            }
         }
+        if(result == 0)
+            printf("Sorry, couldn't find a match.\n");
+        break;
+    case(2):
+        printf("Enter first name for whom you search:");
+        scanf("%s",key);
+        for(i=0; i<members; i++)
+        {
+            if(strcasecmp(people[i].firstname,key)== 0)
+            {
+                Print_data(i);
+                result++;
+            }
+        }
+        if(result == 0)
+            printf("Sorry, couldn't find a match.\n");
+        break;
+    case(3):
+        printf("Enter Date of Birth\n");
+        printf("Day:");
+        scanf("%s",key1);
+        printf("Month:");
+        scanf("%s",key2);
+        printf("year:");
+        scanf("%s",key3);
+        for(i=0; i<members; i++)
+        {
+            if((strcasecmp(people[i].date.day,key1)== 0)&&(strcasecmp(people[i].date.month,key2)== 0)&&(strcasecmp(people[i].date.year,key3)== 0))
+            {
+                Print_data(i);
+                result++;
+            }
+        }
+        if(result == 0)
+            printf("Sorry, couldn't find a match.\n");
+        break;
+    case(4):
+        printf("Enter Address for whom you search:");
+        getchar();
+        gets(key);
+        for(i=0; i<members; i++)
+        {
+            key4=strstr(people[i].address,key);
+            if(key4!=NULL)
+            {
+                Print_data(i);
+                result++;
+            }
+
+        }
+        if(result == 0)
+            printf("Sorry, couldn't find a match.\n");
+        break;
+    case(5):
+        printf("Enter the E-mail to search for:");
+        scanf("%s",key);
+        for(i=0; i<members; i++)
+        {
+            if(strcasecmp(people[i].mail,key)== 0)
+            {
+                Print_data(i);
+                result++;
+            }
+        }
+        if(result == 0)
+            printf("Sorry, couldn't find a match.\n");
+        break;
+    case(6):
+        printf("Enter Number to search for:");
+        scanf("%s",key);
+        for(i=0; i<members; i++)
+        {
+            if(strcasecmp(people[i].number,key)== 0)
+            {
+                Print_data(i);
+                result++;
+            }
+        }
+        if(result == 0)
+            printf("Sorry, couldn't find a match.\n");
+        break;
     }
-    if(result == 0)
-        printf("Sorry, couldn't find a match.\n");
-
-
-
 }
 void File_Delete()
 {
@@ -305,7 +430,7 @@ void File_Modify()
 void File_Sort()
 {
     int x;
-    printf("do you want to sorted by\n 1.last name\n 2.date of birth\n ");
+    printf("Do you want to sort by\n 1.last name\n 2.date of birth\n ");
     scanf("%d",&x);
     int sorted;
     data temp;
@@ -331,7 +456,7 @@ void File_Sort()
                     people[i+1]=temp;
                     sorted=1;
                 }
-                else if(strcasecmp(people[i].lastname,people[i+1].lastname)==0&&strcasecmp(people[i].firstname,people[i+1].firstname)==0&&people[i].number>people[i+1].number)
+                else if(strcasecmp(people[i].lastname,people[i+1].lastname)==0&&strcasecmp(people[i].firstname,people[i+1].firstname)==0&&strcasecmp(people[i].number,people[i+1].number)>0)
                 {
                     temp=people[i];
                     people[i]=people[i+1];
@@ -350,21 +475,21 @@ void File_Sort()
             sorted=0;
             for(i=0; i<members-1; i++)
             {
-                if(people[i].date.year>people[i+1].date.year)
+                if(strcasecmp(people[i].date.year,people[i+1].date.year)>0)
                 {
                     temp=people[i];
                     people[i]=people[i+1];
                     people[i+1]=temp;
                     sorted=1;
                 }
-                else if(people[i].date.year==people[i+1].date.year&&people[i].date.month>people[i+1].date.month)
+                else if(strcasecmp(people[i].date.year,people[i+1].date.year)==0&&(strcasecmp(people[i].date.month,people[i+1].date.month)>0))
                 {
                     temp=people[i];
                     people[i]=people[i+1];
                     people[i+1]=temp;
                     sorted=1;
                 }
-                else if(people[i].date.year==people[i+1].date.year&&people[i].date.month==people[i+1].date.month&&people[i].date.day>people[i+1].date.day)
+                else if(strcasecmp(people[i].date.year,people[i+1].date.year)==0&&(strcasecmp(people[i].date.month,people[i+1].date.month)==0)&&(strcasecmp(people[i].date.day,people[i+1].date.day)>0))
                 {
                     temp=people[i];
                     people[i]=people[i+1];
@@ -396,7 +521,7 @@ void File_Print()
 }
 void File_Save()
 {
-    int i=members-10;
+    int i;
     File_Sort();
     fpb=fopen("phone-book2.txt","w");
     for(i=0; i<members; i++)
