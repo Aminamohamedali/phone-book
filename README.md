@@ -347,7 +347,7 @@ void File_Modify()
     char key[12];
     data same[8];
     int result = 0;
-    int i,j=0,n;
+    int i,j=0,n,temp=0;
     printf("Enter last name:");
     scanf("%s",key);
     for(i=0; i<members; i++)
@@ -369,15 +369,16 @@ void File_Modify()
     }
     if(result == 0)
     {
-        printf("Sorry, couldn't find a match.\n");
+        printf("Sorry, couldn't find a match.\n\n");
         File_Modify();
     }
 
-    printf("Which contact do you want to edit [");
+    if(j>1){printf("Which contact do you want to edit [");
     for(i=0; i<j; i++)
         printf("%d ",i+1);
     printf("]\n");
-    scanf("%d",&n);
+    scanf("%d",&n);}
+    else n=1;
     printf("Which field do you want to edit\n");
     printf("1.last name:%s\n",same[--n].lastname);
     printf("2.first name:%s\n",same[n].firstname);
@@ -390,31 +391,72 @@ void File_Modify()
     scanf("%d",&j);
     for(i=0; i<members; i++)
     {
-        if(same[n].number==people[i].number)
+        if(strcmp(same[n].number,people[i].number)==0)
             break;
     }
     switch(j)
     {
     case(1):
         printf("Enter the new last name:");
+        while(1)
+    {
         scanf("%s",people[i].lastname);
+        temp=NameValidation(people[i].lastname);
+        if(!temp)
+            printf("Not valid \nplease enter correct Name\n");
+        else
+            break;
+    }
         break;
     case(2):
         printf("Enter the new first name:");
+        while(1)
+    {
         scanf("%s",people[i].firstname);
+        temp=NameValidation(people[i].firstname);
+        if(!temp)
+            printf("Not valid \nplease enter correct Name\n");
+        else
+            break;
+    }
         break;
     case(3):
         printf("Enter the new Address:");
         getchar();
         gets(people[i].address);
+        break;
     case(4):
         printf("Enter the new Date of birth:");
         printf("Day:");
+        while(1)
+    {
         scanf("%s",people[i].date.day);
-        printf("Month:");
+        temp=DayValidation(people[i].date.day);
+        if(!temp)
+            printf("Not valid \nplease enter correct day between[1~31]\n ");
+        else
+            break;
+    }
+    printf("Month:");
+    while(1)
+    {
         scanf("%s",people[i].date.month);
-        printf("Year:");
+        temp=MonthValidation(people[i].date.month);
+        if(!temp)
+            printf("Not valid \nplease enter correct month between[1~12]\n ");
+        else
+            break;
+    }
+    printf("Year:");
+    while(1)
+    {
         scanf("%s",people[i].date.year);
+        temp=yearValidation(people[i].date.year);
+        if(!temp)
+            printf("Not valid \nplease enter correct year between[1900~2018]\n ");
+        else
+            break;
+    }
         break;
     case(5):
         printf("Enter the new E-mail:");
@@ -423,7 +465,16 @@ void File_Modify()
         break;
     case(6):
         printf("Enter the new number:");
+        while(1)
+    {
         scanf("%s",people[i].number);
+        temp=NumberValidation(people[i].number);
+        if(!temp)
+            printf("Not valid \nplease enter correct number\n");
+        else
+            break;
+    }
+
     }
 
 }
