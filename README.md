@@ -48,7 +48,11 @@ int main()
 
     return 0;
 }
-////////header1/////////
+
+
+
+////////header1 validation.h/////////
+
 typedef struct
 {
     char day[4];
@@ -109,6 +113,56 @@ int NumberValidation(char x[])
     }
     return 1;
 }
+int Emailvalidation(char x[])
+{
+    int i,len,j,flag,m;
+    int check;
+    j=m=flag=check=0;
+    len=strlen(x);
+    char b[35];
+    if(strstr(x," ")!=NULL)
+        return 0;
+    for(i=0; i<len; i++)
+    {
+        if(x[i]=='@')
+        {
+            for(; i<len; i++)
+            {
+                b[j]=x[i+1];
+                j++;
+            }
+            check++;}
+    }
+    if(check==1)
+    {
+        for(i=0; i<j; i++)
+        {
+            if(b[i]=='.')
+            {
+                for(; i<j-1; i++)
+                {
+                    if(b[i+1]!='.')
+                    {
+                        m++;
+                    }
+                    else if(b[i+1]=='.')
+                    {
+
+                        return 0;
+                        flag =1;
+                        break;
+                    }
+                }
+            }
+        }
+        if(m<3&&flag==0)
+            return 0;
+        else
+            return 1;
+    }
+    else
+    return 0;
+}
 void Print_data(int j)
 {
         printf("last name:%s\n",(people+j)->lastname);
@@ -120,7 +174,10 @@ void Print_data(int j)
         printf("E-mail:%s\n",(people+j)->mail);
         printf("phone number:%s\n\n",(people+j)->number);
 }
-////////header2/////////
+
+
+
+////////header2 phone-book.h/////////
 #include <string.h>
 #include "validation.h"
 
@@ -151,7 +208,7 @@ void File_Add()
         scanf("%s",people[members].lastname);
         temp=NameValidation(people[members].lastname);
         if(!temp)
-            printf("Not valid \nplease enter correct Name:");
+            printf("Not valid \nplease enter correct Name\n");
         else
             break;
     }
@@ -161,7 +218,7 @@ void File_Add()
         scanf("%s",people[members].firstname);
         temp=NameValidation(people[members].firstname);
         if(!temp)
-            printf("Not valid \nplease enter correct Name:");
+            printf("Not valid \nplease enter correct Name\n");
         else
             break;
     }
@@ -173,7 +230,7 @@ void File_Add()
         scanf("%s",people[members].date.day);
         temp=DayValidation(people[members].date.day);
         if(!temp)
-            printf("Not valid \nplease enter correct day between[1~31] ");
+            printf("Not valid \nplease enter correct day between[1~31]\n ");
         else
             break;
     }
@@ -183,7 +240,7 @@ void File_Add()
         scanf("%s",people[members].date.month);
         temp=MonthValidation(people[members].date.month);
         if(!temp)
-            printf("Not valid \nplease enter correct month between[1~12] ");
+            printf("Not valid \nplease enter correct month between[1~12]\n ");
         else
             break;
     }
@@ -193,7 +250,7 @@ void File_Add()
         scanf("%s",people[members].date.year);
         temp=yearValidation(people[members].date.year);
         if(!temp)
-            printf("Not valid \nplease enter correct year between[1900~2018] ");
+            printf("Not valid \nplease enter correct year between[1900~2018]\n ");
         else
             break;
     }
@@ -201,14 +258,22 @@ void File_Add()
     getchar();
     gets(people[members].address);
     printf("Enter the email:");
-    gets(people[members].mail);
+    while(1)
+    {
+        gets(people[members].mail);
+        temp=Emailvalidation(people[members].mail);
+        if(!temp)
+            printf("Not valid \nplease enter correct E-mail format\n ");
+        else
+            break;
+    }
     printf("Enter phone number:");
     while(1)
     {
         scanf("%s",people[members].number);
         temp=NumberValidation(people[members].number);
         if(!temp)
-            printf("Not valid \nplease enter correct number");
+            printf("Not valid \nplease enter correct number\n");
         else
             break;
     }
@@ -216,109 +281,61 @@ void File_Add()
 }
 void File_Search()
 {
-    char key[12],key1[4],key2[4],key3[4];
-    char*key4;
+    char key1[12],key2[4],key3[4],key4[8],key5[12],key6[12],key7[12],key8[12];
     int result = 0;
-    int i,x;
-    printf("Select the field by which you want to search\n ");
-    printf("1.Lastname\n 2.Firstname\n 3.Date of birth\n 4.Address\n 5.E-mail\n 6.Number\n");
-    scanf("%d",&x);
-    switch(x)
+    int i;
+    getchar();
+    printf("1.Lastname:");
+    gets(key1);
+    printf("2.Firstname:");
+    gets(key2);
+    printf("3.Date of birth:\n");
+    printf("Day:");
+    gets(key3);
+    printf("Month:");
+    gets(key4);
+    printf("year:");
+    gets(key5);
+    printf("4.Address:");
+    gets(key6);
+    printf("5.E-mail:");
+    gets(key7);
+    printf("6.Number:");
+    gets(key8);
+    printf("\n");
+    for(i=0; i<members; i++)
     {
-    case(1):
-        printf("Enter last name for whom you search:");
-        scanf("%s",key);
-        for(i=0; i<members; i++)
+        if((strcmp(key1,"")==0)||strcasecmp(people[i].lastname,key1)== 0)
         {
-            if(strcasecmp(people[i].lastname,key)== 0)
+            if((strcmp(key2,"")==0)||(strcasecmp(people[i].firstname,key2)== 0))
             {
-                Print_data(i);
-                result++;
+                if((strcmp(key3,"")==0)||(strcasecmp(people[i].date.day,key3)== 0))
+                {
+                    if((strcmp(key4,"")==0)||(strcasecmp(people[i].date.month,key4)== 0))
+                    {
+                        if((strcmp(key5,"")==0)||((strcasecmp(people[i].date.year,key5)== 0)))
+                        {
+                            if((strcmp(key6,"")==0)||(strstr(people[i].address,key6)!=NULL))
+                            {
+                                if((strcmp(key7,"")==0)||(strcasecmp(people[i].mail,key7)== 0))
+                                {
+                                    if((strcmp(key8,"")==0)||(strcasecmp(people[i].number,key8)== 0))
+                                    {
+                                        Print_data(i);
+                                        result++;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
             }
         }
-        if(result == 0)
-            printf("Sorry, couldn't find a match.\n");
-        break;
-    case(2):
-        printf("Enter first name for whom you search:");
-        scanf("%s",key);
-        for(i=0; i<members; i++)
-        {
-            if(strcasecmp(people[i].firstname,key)== 0)
-            {
-                Print_data(i);
-                result++;
-            }
-        }
-        if(result == 0)
-            printf("Sorry, couldn't find a match.\n");
-        break;
-    case(3):
-        printf("Enter Date of Birth\n");
-        printf("Day:");
-        scanf("%s",key1);
-        printf("Month:");
-        scanf("%s",key2);
-        printf("year:");
-        scanf("%s",key3);
-        for(i=0; i<members; i++)
-        {
-            if((strcasecmp(people[i].date.day,key1)== 0)&&(strcasecmp(people[i].date.month,key2)== 0)&&(strcasecmp(people[i].date.year,key3)== 0))
-            {
-                Print_data(i);
-                result++;
-            }
-        }
-        if(result == 0)
-            printf("Sorry, couldn't find a match.\n");
-        break;
-    case(4):
-        printf("Enter Address for whom you search:");
-        getchar();
-        gets(key);
-        for(i=0; i<members; i++)
-        {
-            key4=strstr(people[i].address,key);
-            if(key4!=NULL)
-            {
-                Print_data(i);
-                result++;
-            }
-
-        }
-        if(result == 0)
-            printf("Sorry, couldn't find a match.\n");
-        break;
-    case(5):
-        printf("Enter the E-mail to search for:");
-        scanf("%s",key);
-        for(i=0; i<members; i++)
-        {
-            if(strcasecmp(people[i].mail,key)== 0)
-            {
-                Print_data(i);
-                result++;
-            }
-        }
-        if(result == 0)
-            printf("Sorry, couldn't find a match.\n");
-        break;
-    case(6):
-        printf("Enter Number to search for:");
-        scanf("%s",key);
-        for(i=0; i<members; i++)
-        {
-            if(strcasecmp(people[i].number,key)== 0)
-            {
-                Print_data(i);
-                result++;
-            }
-        }
-        if(result == 0)
-            printf("Sorry, couldn't find a match.\n");
-        break;
     }
+    if(result==0)
+        printf("Sorry couldn't find a match\n\n");
 }
+
 void File_Delete()
 {
     int check=members;
@@ -338,7 +355,7 @@ void File_Delete()
         }
     }
     if(check==members)
-        printf("no data to delete\n");
+        printf("no data to delete\n\n");
 
 
 }
@@ -373,12 +390,16 @@ void File_Modify()
         File_Modify();
     }
 
-    if(j>1){printf("Which contact do you want to edit [");
-    for(i=0; i<j; i++)
-        printf("%d ",i+1);
-    printf("]\n");
-    scanf("%d",&n);}
-    else n=1;
+    if(j>1)
+    {
+        printf("Which contact do you want to edit [");
+        for(i=0; i<j; i++)
+            printf("%d ",i+1);
+        printf("]\n");
+        scanf("%d",&n);
+    }
+    else
+        n=1;
     printf("Which field do you want to edit\n");
     printf("1.last name:%s\n",same[--n].lastname);
     printf("2.first name:%s\n",same[n].firstname);
@@ -399,26 +420,26 @@ void File_Modify()
     case(1):
         printf("Enter the new last name:");
         while(1)
-    {
-        scanf("%s",people[i].lastname);
-        temp=NameValidation(people[i].lastname);
-        if(!temp)
-            printf("Not valid \nplease enter correct Name\n");
-        else
-            break;
-    }
+        {
+            scanf("%s",people[i].lastname);
+            temp=NameValidation(people[i].lastname);
+            if(!temp)
+                printf("Not valid \nplease enter correct Name\n");
+            else
+                break;
+        }
         break;
     case(2):
         printf("Enter the new first name:");
         while(1)
-    {
-        scanf("%s",people[i].firstname);
-        temp=NameValidation(people[i].firstname);
-        if(!temp)
-            printf("Not valid \nplease enter correct Name\n");
-        else
-            break;
-    }
+        {
+            scanf("%s",people[i].firstname);
+            temp=NameValidation(people[i].firstname);
+            if(!temp)
+                printf("Not valid \nplease enter correct Name\n");
+            else
+                break;
+        }
         break;
     case(3):
         printf("Enter the new Address:");
@@ -429,34 +450,34 @@ void File_Modify()
         printf("Enter the new Date of birth:");
         printf("Day:");
         while(1)
-    {
-        scanf("%s",people[i].date.day);
-        temp=DayValidation(people[i].date.day);
-        if(!temp)
-            printf("Not valid \nplease enter correct day between[1~31]\n ");
-        else
-            break;
-    }
-    printf("Month:");
-    while(1)
-    {
-        scanf("%s",people[i].date.month);
-        temp=MonthValidation(people[i].date.month);
-        if(!temp)
-            printf("Not valid \nplease enter correct month between[1~12]\n ");
-        else
-            break;
-    }
-    printf("Year:");
-    while(1)
-    {
-        scanf("%s",people[i].date.year);
-        temp=yearValidation(people[i].date.year);
-        if(!temp)
-            printf("Not valid \nplease enter correct year between[1900~2018]\n ");
-        else
-            break;
-    }
+        {
+            scanf("%s",people[i].date.day);
+            temp=DayValidation(people[i].date.day);
+            if(!temp)
+                printf("Not valid \nplease enter correct day between[1~31]\n ");
+            else
+                break;
+        }
+        printf("Month:");
+        while(1)
+        {
+            scanf("%s",people[i].date.month);
+            temp=MonthValidation(people[i].date.month);
+            if(!temp)
+                printf("Not valid \nplease enter correct month between[1~12]\n ");
+            else
+                break;
+        }
+        printf("Year:");
+        while(1)
+        {
+            scanf("%s",people[i].date.year);
+            temp=yearValidation(people[i].date.year);
+            if(!temp)
+                printf("Not valid \nplease enter correct year between[1900~2018]\n ");
+            else
+                break;
+        }
         break;
     case(5):
         printf("Enter the new E-mail:");
@@ -466,14 +487,14 @@ void File_Modify()
     case(6):
         printf("Enter the new number:");
         while(1)
-    {
-        scanf("%s",people[i].number);
-        temp=NumberValidation(people[i].number);
-        if(!temp)
-            printf("Not valid \nplease enter correct number\n");
-        else
-            break;
-    }
+        {
+            scanf("%s",people[i].number);
+            temp=NumberValidation(people[i].number);
+            if(!temp)
+                printf("Not valid \nplease enter correct number\n");
+            else
+                break;
+        }
 
     }
 
@@ -607,130 +628,28 @@ void File_Quit(int y)
     }
     exit(1);
 }
-//////////
 
+/////////
+phone-book.txt
 
+Sami,Ahmed,10-06-1989,26 elhoreya street-Alexandria,ahmed_sami45@yahoo.com,4876321
+Khaled,Sara,11-08-1999,211 el max street-Alexandria,sara.khaled99@yahoo.com,598327
+attia,Maram,22-12-1998,23 zezenia street-Alexandria,maram.ali.attia@gmail.com,5303596
+selim,Amina,27-07-1999,21 riad street-Alexandria,Amina.mohamed.ali@gmail.com,5789362
+assem,khadija,23-09-1999,75 al rondi street-Alexandria,khadija_Assem99@gmail.com,5982067
+Ali,Mohamed,22-05-2007,28 gleem street-Cairo,mohamed.ali35@alexu.edu,5960357
+Ahmed,omar,12-03-1989,35 al moez street-Cairo,omar.ahmed1989@hotmail.com,7852964
+Ibrahim,ali,30-09-1978,66 zahran street-Aswan,ibrahim.ali78@gmail.com,986327
+ali,Mai,15-03-2009,20 nasir street-Alexandria,mai-ali20@yahoo.com,5910637
+Omar,ahmed,09-07-2001,19 talaat-Alexandria,,ahmed.omar@ieee.org,9304587
+ali,shimaa,16-07-2000,21 loran-Alexandria,shimaa_Ahmed2000@gmail.com,9632845
+Habiba,Ibrahim,16-03-2009,20 roushdy-Alexandria,habibaIbrahim@yahoo.com,5396217
+Ziad,Mirna,15-03-2002,18 syria street-Alexandria,mirna-ziad02@gmail.com,9638514
+Sami,Ahmed,06-10-1999,26 elhoreya street-Alexandria,Ahmed.sami99@gmail.com,5986267
+Ahmed,ayman,12-03-1989,35 al moez street-cairo,ayman_ahmed89@gmail.com,7596324
 
-Sami,Ahmed,10-06-1989,26 Elhoreya Street,Alexandria,4876321
-Sara,Khaled,11-08-1999,211 el max street,Alexandria,598327
-Maram,attia,22-12-1998,23 zezenia street,Alexandria,5303596
-Amina,selim,27-7-1999,21 Riad street,Alexandria,5789362
-Khadija,assem,23-09-1999,75 al rondi street,Alexandria,5982067
-Ali,Mohamed,22-05-2007,28 gleem street,Alexandria,5960357
-Ahmed,omar,12-03-1989,35 al moez street,cairo,7852964
-Ibrahim,ali,30-09-1978,66 zahran street,Aswan,986327
-Mai,ali,15-03-2009,20 nasir street,Alexandria,5910637
-Omar,ahamed,09-07-2001,19 talaat,Alexandria,9304587
-Shaima,ali,16-07-2000,21 loran,Alexandria,9632845
-Habiba,Ibrahim,16-03-2009,20 roushdy,Alexandria,5396217
-Mirna,ali,15-03-2002,18 syria street,Alexandria,9638514
-Sami,Ahmed,10-06-1989,26 Elhoreya Street,Alexandria,5986267
-Ahmed,ayman,12-03-1989,35 al moez street,cairo,7596324
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <ctype.h>
+//////phone-book2.txt
 
-
-
-int emailvalidation(char *a)
-{
-
-    int i,n,j,x,flag,m,r;
-    int check;
-    x=j=m=flag=check=0;
-    n=strlen(a);
-    char b[35],z[35];
-    for(i=0; i<n; i++)
-    {
-        if(a[i]=='@')
-        {
-            for(; i<n; i++)
-            {
-                b[j]=a[i+1];
-                j++;
-
-            }
-            check++;
-        }
-        else
-        {
-            z[x]=a[i];
-            x++;
-        }
-
-    }
-    // puts(b);
-    // puts(z);
-    // printf("%d %d %d %d",check,j,x,n);
-    if(check==1)
-    {
-        for(i=0; i<j; i++)
-        {
-            if(b[i]=='.')
-            {
-                for(; i<j-1; i++)
-                {
-                    if(b[i+1]!='.')
-                    {
-                        m++;
-                    }
-                    else if(b[i+1]=='.')
-                    {
-
-                        return 0;
-                        flag =1;
-                        break;
-                    }
-                }
-            }
-        }
-        if(m<3&&flag==0)
-            return 0;
-        else
-            return 1;
-
-        for(i=0; i<x; i++)
-        {
-            if(strstr(z,"#")||)
-            {
-                return 0;
-                break;
-            }
-        }
-        if(i==x)
-        {
-            return 1;
-        }
-
-
-    }
-    else
-        return 0;
-
-
-
-
-}
-
-int main()
-{
-    char a[35];
-    int temp;
-    while(1)
-    {
-        gets(a);
-        temp=emailvalidation(a);
-        if(!temp)
-            printf("Not valid \nplease enter correct email");
-        else
-            break;
-    }
-
-
-
-    return 0;
-}
 
 
 
