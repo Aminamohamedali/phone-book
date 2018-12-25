@@ -626,6 +626,111 @@ Habiba,Ibrahim,16-03-2009,20 roushdy,Alexandria,5396217
 Mirna,ali,15-03-2002,18 syria street,Alexandria,9638514
 Sami,Ahmed,10-06-1989,26 Elhoreya Street,Alexandria,5986267
 Ahmed,ayman,12-03-1989,35 al moez street,cairo,7596324
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <ctype.h>
+
+
+
+int emailvalidation(char *a)
+{
+
+    int i,n,j,x,flag,m,r;
+    int check;
+    x=j=m=flag=check=0;
+    n=strlen(a);
+    char b[35],z[35];
+    for(i=0; i<n; i++)
+    {
+        if(a[i]=='@')
+        {
+            for(; i<n; i++)
+            {
+                b[j]=a[i+1];
+                j++;
+
+            }
+            check++;
+        }
+        else
+        {
+            z[x]=a[i];
+            x++;
+        }
+
+    }
+    // puts(b);
+    // puts(z);
+    // printf("%d %d %d %d",check,j,x,n);
+    if(check==1)
+    {
+        for(i=0; i<j; i++)
+        {
+            if(b[i]=='.')
+            {
+                for(; i<j-1; i++)
+                {
+                    if(b[i+1]!='.')
+                    {
+                        m++;
+                    }
+                    else if(b[i+1]=='.')
+                    {
+
+                        return 0;
+                        flag =1;
+                        break;
+                    }
+                }
+            }
+        }
+        if(m<3&&flag==0)
+            return 0;
+        else
+            return 1;
+
+        for(i=0; i<x; i++)
+        {
+            if(strstr(z,"#")||)
+            {
+                return 0;
+                break;
+            }
+        }
+        if(i==x)
+        {
+            return 1;
+        }
+
+
+    }
+    else
+        return 0;
+
+
+
+
+}
+
+int main()
+{
+    char a[35];
+    int temp;
+    while(1)
+    {
+        gets(a);
+        temp=emailvalidation(a);
+        if(!temp)
+            printf("Not valid \nplease enter correct email");
+        else
+            break;
+    }
+
+
+
+    return 0;
+}
 
 
 
