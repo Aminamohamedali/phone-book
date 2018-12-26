@@ -66,7 +66,7 @@ typedef struct
     birthdate date;
     char address[24];
     char mail[32];
-    char number[8];
+    char number[12];
 } data;
 FILE*fpb;
 data people[100];
@@ -104,34 +104,51 @@ int yearValidation(char x[])
 int NumberValidation(char x[])
 {
     int i;
-    if (strlen(x)!=7)
+    if (strlen(x)!=7&&strlen(x)!=11)
         return 0;
-    for(i=0; i<7; i++)
+    else if(strlen(x)==7)
     {
-        if(x[i]<48||x[i]>57)
+        for(i=0; i<7; i++)
+        {
+            if(x[i]<48||x[i]>57)
+                return 0;
+        }
+        return 1;
+    }
+    else
+    {
+        if(x[0]=='0'&&x[1]=='1')
+        {
+            for(i=2; i<11; i++)
+            {
+                if(x[i]<48||x[i]>57)
+                    return 0;
+            }
+            return 1;
+        }
+        else
             return 0;
     }
-    return 1;
 }
+
 int Emailvalidation(char x[])
 {
-    int i,len,j,flag,m;
-    int check;
-    j=m=flag=check=0;
-    len=strlen(x);
-    char b[35];
+    int i,j,m,check;
+    j=m=check=0;
+    char b[12];
     if(strstr(x," ")!=NULL)
         return 0;
-    for(i=0; i<len; i++)
+    for(i=0; i<strlen(x); i++)
     {
         if(x[i]=='@')
         {
-            for(; i<len; i++)
+            for(;i<strlen(x);i++)
             {
                 b[j]=x[i+1];
                 j++;
             }
-            check++;}
+            check++;
+        }
     }
     if(check==1)
     {
@@ -139,40 +156,35 @@ int Emailvalidation(char x[])
         {
             if(b[i]=='.')
             {
-                for(; i<j-1; i++)
+                for(;i<j-1;i++)
                 {
                     if(b[i+1]!='.')
                     {
                         m++;
                     }
                     else if(b[i+1]=='.')
-                    {
-
                         return 0;
-                        flag =1;
-                        break;
-                    }
                 }
             }
         }
-        if(m<3&&flag==0)
+        if(m<3)
             return 0;
         else
             return 1;
     }
     else
-    return 0;
+        return 0;
 }
 void Print_data(int j)
 {
-        printf("last name:%s\n",(people+j)->lastname);
-        printf("first name:%s\n",(people+j)->firstname);
-        printf("Date of birth:%s/",(people+j)->date.day);
-        printf("%s/",(people+j)->date.month);
-        printf("%s\n",(people+j)->date.year);
-        printf("Address:%s\n",(people+j)->address);
-        printf("E-mail:%s\n",(people+j)->mail);
-        printf("phone number:%s\n\n",(people+j)->number);
+    printf("last name:%s\n",(people+j)->lastname);
+    printf("first name:%s\n",(people+j)->firstname);
+    printf("Date of birth:%s/",(people+j)->date.day);
+    printf("%s/",(people+j)->date.month);
+    printf("%s\n",(people+j)->date.year);
+    printf("Address:%s\n",(people+j)->address);
+    printf("E-mail:%s\n",(people+j)->mail);
+    printf("phone number:%s\n\n",(people+j)->number);
 }
 
 
